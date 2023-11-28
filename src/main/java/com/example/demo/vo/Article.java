@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor  // 기본생성자를 생성. 즉 기본생성자도 있고 사용자가 값을 넣었을 때 자동으로 만드는 생성자도 있음
 public class Article{
 	private int id;
+	private String regDate;
+	private String updateDate;
 	private String title;
 	private String body;
 	

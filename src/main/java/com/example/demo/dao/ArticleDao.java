@@ -13,18 +13,13 @@ import com.example.demo.vo.Article;
 @Mapper
 public interface ArticleDao {
 	
-	@Select("SELECT * FROM article WHERE id = #{id}")
 	public Article getArticleById(int id);
 	
-	//@Insert
-	public Article writeArtice(String title, String body);
+	public List<Article> getArticles();
 	
-	@Update("UPDATE article SET updateDate = NOW(), title = #{title}, body = #{body} WHERE id = #{id}")
+	public void writeArticle(String title, String body);
+	
 	public void modifyArticle(int id, String title, String body);
 
-	@Delete("DELETE FROM article WHERE id = #{id}")
 	public void deleteArticle(int id);
-
-	@Select("SELECT * FROM article ORDER BY id DESC")
-	public List<Article> getArticles();
 }

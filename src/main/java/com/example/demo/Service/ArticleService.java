@@ -1,11 +1,8 @@
 package com.example.demo.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.dao.ArticleDao;
 import com.example.demo.vo.Article;
 
@@ -22,8 +19,8 @@ public class ArticleService {
 		return articleDao.getArticleById(id);
 	}
 	
-	public Article writeArticle(String title, String body) {
-		return articleDao.writeArtice(title, body);
+	public void writeArticle(String title, String body) {
+		articleDao.writeArticle(title, body);
 	}
 	
 	public void modifyArticle(int id, String title, String body) {

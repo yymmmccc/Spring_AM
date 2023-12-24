@@ -19,8 +19,10 @@ public class ArticleService {
 		return articleDao.getArticleById(id);
 	}
 	
-	public void writeArticle(String title, String body) {
+	public int writeArticle(String title, String body) {
 		articleDao.writeArticle(title, body);
+		 
+		return getLastArticle();
 	}
 	
 	public void modifyArticle(int id, String title, String body) {
@@ -33,5 +35,9 @@ public class ArticleService {
 
 	public List<Article> getArticles() {
 		return articleDao.getArticles();
+	}
+	
+	public int getLastArticle() {
+		return articleDao.getLastArticle();
 	}
 }

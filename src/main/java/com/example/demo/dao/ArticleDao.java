@@ -22,4 +22,7 @@ public interface ArticleDao {
 	public void modifyArticle(int id, String title, String body);
 
 	public void deleteArticle(int id);
+
+	@Select("SELECT LAST_INSERT_ID()")
+	public int getLastArticle();
 }

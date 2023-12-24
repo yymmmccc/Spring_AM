@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.MemberDao;
+import com.example.demo.vo.Article;
 import com.example.demo.vo.Member;
+import com.example.demo.vo.ResultData;
 
 @Service
 public class MemberService {
@@ -15,29 +17,30 @@ public class MemberService {
 		this.memberDao = memberDao;
 	}
 
-	public int doJoin(String loginId, String loginPw, String name, String nickName, String phoneNum, String email) {
+	public ResultData<Member> doJoin(String loginId, String loginPw, String name, String nickName, String phoneNum, String email) {
 		
 		Member existsMember = getMemberByLoginId(loginId);
 		
 		if(existsMember != null) { // 우리가 가입하려는 아이디가 이미 사용중일때
-			return -1;
+			return ResultData.from("F-1", "이미 사용중인 아이디입니다.");
 		}
 		
 		existsMember = getMemberNickName(nickName);
 		
 		if(existsMember != null) {
-			return -2;
+			return ResultData.from("F-1", "이미 사용중인 닉네임입니다.");
 		}
 		
 		existsMember = getMemberEmail(name, email);
 		
 		if(existsMember != null) {
-			return -3;
+			return ResultData.from("F-1", "이미 사용중인 이메일입니다.");
 		}
 		
 		memberDao.doJoin(loginId, loginPw, name, nickName, phoneNum, email);
 		
-		return getLastInsertId();
+		Member member = getMemberById(getLastInsertId());
+		return ResultData.from("S-1", "회원가입 성공 !", member);
 	}
 	
 	private Member getMemberNickName(String nickName) {

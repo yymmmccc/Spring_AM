@@ -36,5 +36,6 @@ public interface MemberDao {
 
 	@Select("SELECT * FROM member WHERE name = #{name} and email = #{email}")
 	public Member getMemberEmail(String name, String email);
+
 	
 }

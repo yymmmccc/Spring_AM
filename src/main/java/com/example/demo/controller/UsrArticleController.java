@@ -66,30 +66,30 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public String doModify(int id, String title, String body) {
+	public ResultData doModify(int id, String title, String body) {
 		
 		Article foundArticle = articleService.getArticleById(id);
 		
 		if(foundArticle == null) {
-			return id + "번 게시물이 존재하지않습니다.";
+			return ResultData.from("F-1", "해당 게시물이 없습니다.");
 		}
 		
 		articleService.modifyArticle(id, title, body);
 		
-		return id + "번 게시글이 수정되었습니다.";
+		return ResultData.from("S-1", "해당 게시글이 수정되었습니다.");
 	}
 	
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public String doDelete(int id) {
+	public ResultData doDelete(int id) {
 		Article foundArticle = articleService.getArticleById(id);
 		
 		if(foundArticle == null) {
-			return id + "번 게시물이 존재하지않습니다.";
+			return ResultData.from("F-1", "해당 게시글이 존재하지 않습니다.");
 		}
 	
 		articleService.deleteArticle(id);
 		
-		return id + "번 게시글이 삭제되었습니다";
+		return ResultData.from("S-1", "해당 게시글이 삭제되었습니다.");
 	}
 }

@@ -10,19 +10,24 @@
 				, updateDate = NOW()
 				, title = #{title}
 				, body = #{body}
+				, memberId = #{memberId}
 	</insert>
 	
 
 	<select id="getArticleById" resultType="Article">
-		SELECT *
-			FROM article
-			WHERE id = #{id}
+		SELECT A.*,M.nickName
+			FROM article as A
+			INNER JOIN Member as M
+				ON A.memberId = M.Id
+				WHERE A.id = #{id}
 	</select>
 	
 	<select id="getArticles" resultType="Article">
-		SELECT *
-			FROM article
-			ORDER BY id DESC
+		SELECT A.*,M.nickName
+			FROM article as A
+			INNER JOIN Member as M
+				ON A.memberId = M.Id
+				ORDER BY id DESC
 	</select>
 	
 	<update id="modifyArticle">

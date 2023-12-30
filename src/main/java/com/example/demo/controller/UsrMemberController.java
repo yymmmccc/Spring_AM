@@ -54,7 +54,7 @@ public class UsrMemberController {
 	@ResponseBody
 	public ResultData doLogin(HttpSession session, String loginId, String loginPw) {
 		
-		if(session.getAttribute("loginedId") != null) { // 세션내용을 보았는데 데이터가 있는경우(이미 로그인 된 경우)
+		if(session.getAttribute("loginedMemberId") != null) { // 세션내용을 보았는데 데이터가 있는경우(이미 로그인 된 경우)
 			return ResultData.from("F-A", "이미 로그인되어 있습니다.");
 		}
 
@@ -77,8 +77,9 @@ public class UsrMemberController {
 		}
 		
 		// HttpSession session 은 spring이 알아서 session의 정보들을 불러옴
-		session.setAttribute("loginedId", loginId);
+		session.setAttribute("loginedMemberId", member.getId());
 		// 로그인 성공하면 그 정보를 세션에 저장함.
+		//session.setAttribute("nickName", member.getNickName());
 				
 		return ResultData.from("S-1", member.getNickName() + "님 환영합니다.");
 	}

@@ -17,7 +17,7 @@ public interface ArticleDao {
 	
 	public List<Article> getArticles();
 	
-	public void writeArticle(String title, String body);
+	public void writeArticle(String title, String body, int memberId);
 	
 	public void modifyArticle(int id, String title, String body);
 

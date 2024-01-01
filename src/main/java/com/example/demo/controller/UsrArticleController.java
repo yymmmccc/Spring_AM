@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -50,22 +51,21 @@ public class UsrArticleController {
 	
 	}
 
-	@RequestMapping("/usr/article/getArticles")
-	@ResponseBody
-	public ResultData<List<Article>> getArticles(){
+	@RequestMapping("/usr/article/list")
+	public String getArticles(Model model){
 		
 		List<Article> articles = articleService.getArticles();
 		
-		if(articles.size() == 0) {
-			return ResultData.from("F-1", "게시글이 존재하지않습니다.");
-		}
+		model.addAttribute("articles", articles);
+		// jsp에 articles를 넘기지 않아도 model에 값을 넣으면 jsp는 그 값을 알고있음. 
 		
-		return ResultData.from("S-1", "게시글 전체보기", articles);
+		return "usr/article/list";
 	}
 	
 	@RequestMapping("/usr/article/getArticle")
 	@ResponseBody
-	public ResultData<Article> getArticle(int id){ // Object 타입은 최상위 타입 : 객체, 스트링 모든거 다 리턴가능
+	public ResultData<Article> getArxticle(int id){ // Object 타입은 최상위 타입 : 객체, 스트링 모든거 다 리턴가능
+		
 		Article foundArticle = articleService.getArticleById(id);
 		if(foundArticle == null) {
 			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다.", id));

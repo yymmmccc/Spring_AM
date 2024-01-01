@@ -13,7 +13,6 @@
 				, memberId = #{memberId}
 	</insert>
 	
-
 	<select id="getArticleById" resultType="Article">
 		SELECT A.*,M.nickName
 			FROM article as A

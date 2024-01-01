@@ -24,8 +24,6 @@ public class UsrMemberController {
 	@ResponseBody
 	public ResultData<Member> doJoin(String loginId, String loginPw, String name, String nickName, String phoneNum, String email) {
 		
-		
-		
 		if(Util.empty(loginId)) {
 			return ResultData.from("F-1", "아이디를 입력해주세요");
 		}
@@ -87,11 +85,12 @@ public class UsrMemberController {
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
 	public ResultData doLogout(HttpSession session) {
-		if(session.getAttribute("loginedId") == null) {
+		
+		if(session.getAttribute("loginedMemberId") == null) {
 			return ResultData.from("F-A", "로그인 후 이용해주세요.");
 		}
 		
-		session.removeAttribute("loginedId");
+		session.removeAttribute("loginedMemberId");
 		
 		return ResultData.from("S-1", "로그아웃 되었습니다.");
 	}

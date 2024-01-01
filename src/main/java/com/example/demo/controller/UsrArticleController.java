@@ -75,7 +75,7 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public ResultData doModify(int id, String title, String body) {
+	public ResultData doModify(HttpSession session, int id, String title, String body) {
 		
 		Article foundArticle = articleService.getArticleById(id);
 		
@@ -83,21 +83,34 @@ public class UsrArticleController {
 			return ResultData.from("F-1", "해당 게시물이 없습니다.");
 		}
 		
-		articleService.modifyArticle(id, title, body);
+		return articleService.modifyArticle(session, id, title, body);
 		
-		return ResultData.from("S-1", "해당 게시글이 수정되었습니다.");
 	}
 	
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public ResultData doDelete(int id) {
+	public ResultData doDelete(HttpSession session, int id) {
+		
+		if(session.getAttribute("loginedMemberId") == null) {
+			return ResultData.from("F-1", "로그인 후 이용해주세요.");
+		}
+		
 		Article foundArticle = articleService.getArticleById(id);
 		
 		if(foundArticle == null) {
 			return ResultData.from("F-1", "해당 게시글이 존재하지 않습니다.");
+			
 		}
-	
+		
+		int loginedMemberId = (int)session.getAttribute("loginedMemberId");
+		int memberId = foundArticle.getMemberId();
+		
+		if(loginedMemberId != memberId) {
+			return ResultData.from("F-1", "해당 게시물에 대한 권한이 없습니다.");
+		}
+		
 		articleService.deleteArticle(id);
+		
 		
 		return ResultData.from("S-1", "해당 게시글이 삭제되었습니다.");
 	}

@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Article list</title>
+<title>Insert title here</title>
 </head>
 <body>
 	<div>
@@ -17,26 +16,34 @@
 		</ul>	
 	</div>
 	
-	<h1>게시물 리스트</h1>
+	<h1>상세보기</h1>
 	
 	<table border="1">
-		<thead>
+		<tbody>
 			<tr>
 				<th>번호</th>
-				<th>작성일</th>
-				<th>제목</th>
-				<th>작성자</th>
+				<td>${article.id }</td>
 			</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="article" items="${articles}"> <!-- for(Article article : articles) 랑 똑같은말 -->
 			<tr>
-				<td>${article.id}</td>
-				<td>${article.regDate}</td>
-				<td><a href="detail?id=${article.id }">${article.title}</a></td>
-				<td>${article.nickName}</td>
+				<th>작성일</th>
+				<td>${article.regDate }</td>
 			</tr>
-			</c:forEach>
+			<tr>
+				<th>수정일</th>
+				<td>${article.updateDate }</td>
+			</tr>
+			<tr>
+				<th>작성자</th>
+				<td>${article.nickName }</td>
+			</tr>
+			<tr>
+				<th>제목</th>
+				<td>${article.title }</td>
+			</tr>
+			<tr>
+				<th>내용</th>
+				<td>${article.body }</td>
+			</tr>
 		</tbody>
 	</table>
 </body>

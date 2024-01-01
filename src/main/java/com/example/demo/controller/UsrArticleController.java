@@ -52,7 +52,7 @@ public class UsrArticleController {
 	}
 
 	@RequestMapping("/usr/article/list")
-	public String getArticles(Model model){
+	public String showList(Model model){
 		
 		List<Article> articles = articleService.getArticles();
 		
@@ -62,15 +62,14 @@ public class UsrArticleController {
 		return "usr/article/list";
 	}
 	
-	@RequestMapping("/usr/article/getArticle")
-	@ResponseBody
-	public ResultData<Article> getArxticle(int id){ // Object 타입은 최상위 타입 : 객체, 스트링 모든거 다 리턴가능
+	@RequestMapping("/usr/article/detail")
+	public String showDetail(Model model, int id){ // Object 타입은 최상위 타입 : 객체, 스트링 모든거 다 리턴가능
 		
-		Article foundArticle = articleService.getArticleById(id);
-		if(foundArticle == null) {
-			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다.", id));
-		}
-		return ResultData.from("S-1", Util.f("%d번 게시물입니다", id), foundArticle);
+		Article article = articleService.getArticleById(id);
+		
+		model.addAttribute("article", article);
+		
+		return "usr/article/detail";
 	}
 	
 	@RequestMapping("/usr/article/doModify")

@@ -16,4 +16,40 @@ public class Util {
 		// format은 내가 보여주고 싶은 문자열 + %d, %s : args는 치환할 변수
 		return String.format(format, args);
 	}
+	
+	public static String jsHistoryBack(String msg) {
+		if(msg == null) {
+			msg = ""; // null 값 에러가 안나게끔 공백으로 바꿔줌
+		}
+		
+		return Util.f("""
+						<script>
+							const msg = '%s'.trim();
+							if(msg.length > 0){
+								alert(msg);
+							}
+							history.back();
+						</script>
+					""", msg);
+	}
+	
+	public static String jsReplace(String msg, String uri) {
+		if(msg == null) {
+			msg = ""; // null 값 에러가 안나게끔 공백으로 바꿔줌
+		}
+		
+		if(uri == null) {
+			msg = ""; // null 값 에러가 안나게끔 공백으로 바꿔줌
+		}
+		
+		return Util.f("""
+						<script>
+							const msg = '%s'.trim();
+							if(msg.length > 0){
+								alert(msg);
+							}
+							location.replace('%s');
+						</script>
+					""", msg, uri);
+	}
 }

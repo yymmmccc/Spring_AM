@@ -63,11 +63,18 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/detail")
-	public String showDetail(Model model, int id){ // Object 타입은 최상위 타입 : 객체, 스트링 모든거 다 리턴가능
+	public String showDetail(HttpSession session, Model model, int id){ // Object 타입은 최상위 타입 : 객체, 스트링 모든거 다 리턴가능
+		
+		int loginedMemberId = 0;
+		
+		if(session.getAttribute("loginedMemberId") != null){
+			loginedMemberId = (int)session.getAttribute("loginedMemberId");
+		}
 		
 		Article article = articleService.getArticleById(id);
 		
 		model.addAttribute("article", article);
+		model.addAttribute("loginedMemberId", loginedMemberId);
 		
 		return "usr/article/detail";
 	}
@@ -88,16 +95,16 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public ResultData doDelete(HttpSession session, int id) {
+	public String doDelete(HttpSession session, int id) {
 		
 		if(session.getAttribute("loginedMemberId") == null) {
-			return ResultData.from("F-1", "로그인 후 이용해주세요.");
+			return Util.jsHistoryBack("로그인 후 이용해주세요.");
 		}
 		
 		Article foundArticle = articleService.getArticleById(id);
 		
 		if(foundArticle == null) {
-			return ResultData.from("F-1", "해당 게시글이 존재하지 않습니다.");
+			return Util.jsHistoryBack("해당 게시글이 존재하지 않습니다.");
 			
 		}
 		
@@ -105,12 +112,12 @@ public class UsrArticleController {
 		int memberId = foundArticle.getMemberId();
 		
 		if(loginedMemberId != memberId) {
-			return ResultData.from("F-1", "해당 게시물에 대한 권한이 없습니다.");
+			return Util.jsHistoryBack("해당 게시글 대한 권한이 없습니다.");
 		}
 		
 		articleService.deleteArticle(id);
 		
 		
-		return ResultData.from("S-1", "해당 게시글이 삭제되었습니다.");
+		return Util.jsReplace(String.format("%d번 게시글이 삭제되었습니다.", id), "list");
 	}
 }

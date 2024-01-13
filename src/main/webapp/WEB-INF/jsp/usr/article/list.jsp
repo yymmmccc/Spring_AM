@@ -5,6 +5,7 @@
 <c:set var="pageTitle" value="List"/>
 
 <%@ include file="../common/header.jsp" %>
+
 	<section class="mt-8">
 		<div class="container mx-auto">
 			<div class="table-box-type-1">

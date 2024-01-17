@@ -19,8 +19,8 @@ public class ArticleService {
 		return articleDao.getArticleById(id);
 	}
 	
-	public int writeArticle(String title, String body, int memberId) {
-		articleDao.writeArticle(title, body, memberId);
+	public int writeArticle(String title, String body, int memberId, int boardId) {
+		articleDao.writeArticle(title, body, memberId, boardId);
 		 
 		return getLastArticle();
 	}
@@ -33,11 +33,19 @@ public class ArticleService {
 		articleDao.deleteArticle(id);
 	}
 
-	public List<Article> getArticles() {
-		return articleDao.getArticles();
+	public List<Article> getArticles(int boardId, int page, int currentPages) {
+		
+		int pageStart = (page - 1) * currentPages;  
+		// ex. 1페이지는 sql에서 0부터 가져오기, 2페이지는 sql에서 10부터 가져오기, 3페이지는 sql에서 20
+		
+		return articleDao.getArticles(boardId, pageStart, currentPages);
 	}
 	
 	public int getLastArticle() {
 		return articleDao.getLastArticle();
+	}
+
+	public int getArticlesCnt(int boardId) {
+		return articleDao.getArticlesCnt(boardId);
 	}
 }

@@ -25,8 +25,9 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer{
 		registry.addInterceptor(beforeActionInterceptor).addPathPatterns("/**").excludePathPatterns("/resource/**");
 		// addPathPatterns (경로의 모양을 추가한다) /** = 모든 요청이 들어오면 판단한다는 말
 		// excludePathPatterns resource 경로는 정적(css)라서 제어할거야 (검증필요 x)
-		registry.addInterceptor(needLoginInterceptor).addPathPatterns("/usr/article/doAdd")
+		registry.addInterceptor(needLoginInterceptor).addPathPatterns("/usr/article/doWrite")
 				.addPathPatterns("/usr/article/modify").addPathPatterns("/usr/article/doModify")
-				.addPathPatterns("/usr/article/doDelete").addPathPatterns("/usr/member/doLogout");
+				.addPathPatterns("/usr/article/write").addPathPatterns("/usr/article/doDelete")
+				.addPathPatterns("/usr/member/doLogout");
 	}
 }

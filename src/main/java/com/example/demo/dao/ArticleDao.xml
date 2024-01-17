@@ -11,10 +11,11 @@
 				, title = #{title}
 				, body = #{body}
 				, memberId = #{memberId}
+				, boardId = #{boardId}
 	</insert>
 	
 	<select id="getArticleById" resultType="Article">
-		SELECT A.*,M.nickName
+		SELECT A.*, M.nickName
 			FROM article as A
 			INNER JOIN Member as M
 				ON A.memberId = M.Id
@@ -22,11 +23,16 @@
 	</select>
 	
 	<select id="getArticles" resultType="Article">
-		SELECT A.*,M.nickName
+		SELECT A.*, M.nickName
 			FROM article as A
 			INNER JOIN Member as M
 				ON A.memberId = M.Id
+				WHERE 1 = 1
+				<if test = "boardId != 0">
+					AND A.boardId = #{boardId}
+				</if>
 				ORDER BY A.id DESC
+				LIMIT #{pageStart}, #{currentPages}
 	</select>
 	
 	<update id="modifyArticle">

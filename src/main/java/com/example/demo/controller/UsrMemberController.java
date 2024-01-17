@@ -15,11 +15,13 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UsrMemberController {
-	MemberService memberService;
+	private MemberService memberService;
+	private Rq rq;
 	
 	@Autowired
-	public UsrMemberController(MemberService memberService) {
+	public UsrMemberController(MemberService memberService, Rq rq) {
 		this.memberService = memberService;
+		this.rq = rq;
 	}
 	
 	@RequestMapping("/usr/member/doJoin")
@@ -57,10 +59,7 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public String doLogin(HttpServletRequest req, String loginId, String loginPw) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
-		
+	public String doLogin(String loginId, String loginPw) {
 		
 		if(rq.getLoginedMemberId() != 0) { // 세션내용을 보았는데 데이터가 있는경우(이미 로그인 된 경우)
 			return Util.jsHistoryBack("로그아웃 후 이용해주세요.");

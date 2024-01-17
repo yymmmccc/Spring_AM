@@ -41,10 +41,10 @@
 				</table>
 			</div>
 			<div>
-			<button class="btn-text-link" onclick="history.back()">뒤로가기</button>
-			<c:if test="${article.memberId == loginedMemberId}">
-				<a class="btn-text-link" href="modify?id=${article.id}">수정</a>
-				<a class="btn-text-link" href="doDelete?id=${article.id}" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</a>
+			<button class="btn btn-outline btn-success" onclick="history.back()">뒤로가기</button>
+			<c:if test="${article.memberId == rq.loginedMemberId}">
+				<a class="btn btn-outline btn-info" href="modify?id=${article.id}">수정</a>
+				<a class="btn btn-outline btn-error" href="doDelete?id=${article.id}" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</a>
 			</c:if>
 			</div>
 			

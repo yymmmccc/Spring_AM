@@ -2,6 +2,10 @@ package com.example.demo.vo;
 
 import java.io.IOException;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.ScopedProxyMode;
+
 import com.example.demo.util.Util;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,7 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 
-
+@Component
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS) // 우리는 전역변수 Rq객체가 필요한데 이걸 스프링이 알아서 객체를 만들어서 관리해줌
 public class Rq {
 	
 	@Getter
@@ -32,6 +37,8 @@ public class Rq {
 		}
 		
 		this.loginedMemberId = loginedMemberId;
+		
+		this.req.setAttribute("rq", this);
 	}
 
 	public void jsPrintHistoryBack(String msg) {
@@ -49,18 +56,22 @@ public class Rq {
 	}
 
 	public void login(Member member) {
-		this.session.setAttribute("loginedMemberId", member.getId());
 		
+		this.session.setAttribute("loginedMemberId", member.getId());
 	}
 
 	public void logout() {
-		this.session.removeAttribute("loginedMemberId");
 		
+		this.session.removeAttribute("loginedMemberId");
 	}
 
 	public String jsReturnOnview(String msg) {
 		this.req.setAttribute("msg", msg);
 		return "usr/common/js";
+	}
+
+	public void init() {
+		
 	}
 	
 }

@@ -8,11 +8,25 @@
 
 	<section class="mt-8">
 		<div class="container mx-auto">
-			<div class="mb-2">
-				${articlesCnt}개의 글
+			<div class="mb-2 flex justify-between">
+				<div>
+					<span>${ap.articlesCnt}개의 글</span>
+				</div>
+				<div>
+					<form method="get">
+							<select data-value="${searchType}" name="searchType">
+								<option value="title">제목</option>
+								<option value="body">내용</option>
+								<option value="titleBody">제목 + 내용</option>
+							</select>
+						<input class="mt-2" type="text" name="searchKeyword" placeholder="검색어를 입력하세요."/>
+						<input type="hidden" name="boardId" value="${board.id }"/>
+						<button>검색</button>
+					</form>
+				</div>
 			</div>
 			<div class="table-box-type-1">
-				<table>
+				<table class="table">
 					<thead>
 						<tr>
 							<th>번호</th>
@@ -33,6 +47,7 @@
 					</tbody>
 				</table>
 			</div>
+		</div>
 			
 			<c:if test="${rq.loginedMemberId != 0}">
 				<div class="mt-2 flex justify-end">
@@ -42,21 +57,20 @@
 				
 			<div class="mt-4 flex justify-center">
 				<div class="join">
-				
-					<c:if test="${startPage > 1 }">
-						<a class="join-item btn" href="?boardId=${board.id }&page=${startPage-1}">이전</a>
+					<!--  &searchType=${searchType}&searchKeyword=${searchKeyword} 이거 변수로 코드 정리하기-->
+					<c:if test="${ap.startPage > 1 }">
+						<a class="join-item btn" href="?boardId=${board.id }&page=${ap.startPage-1}&searchType=${searchType}&searchKeyword=${searchKeyword}">이전</a>
 					</c:if>
 					
-					<c:forEach begin="${startPage }" end="${endPage }" var="i">
-						<a class="join-item btn ${page == i ? 'btn-active' : ' '}" href="?boardId=${board.id }&page=${i }">${i }</a>
+					<c:forEach begin="${ap.startPage }" end="${ap.endPage }" var="i">
+						<a class="join-item btn ${ap.page == i ? 'btn-active' : ' '}" href="?boardId=${board.id }&page=${i }&searchType=${searchType}&searchKeyword=${searchKeyword}">${i }</a>
 					</c:forEach>
 					
-					<c:if test="${endPage * pageLen <= articlesCnt}">
-						<a class="join-item btn" href="?boardId=${board.id }&page=${endPage+1}">다음</a>
+					<c:if test="${ap.endPage * ap.pageArticles <= ap.articlesCnt}">
+						<a class="join-item btn" href="?boardId=${board.id }&page=${ap.endPage+1}&searchType=${searchType}&searchKeyword=${searchKeyword}">다음</a>
 					</c:if>
 				</div>
 			</div>
-		</div>
 	</section>
 	
 <%@ include file="../common/footer.jsp" %>

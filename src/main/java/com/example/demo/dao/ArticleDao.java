@@ -12,7 +12,7 @@ public interface ArticleDao {
 	
 	public Article getArticleById(int id);
 	
-	public List<Article> getArticles(int boardId, int pageStart, int currentPages);
+	public List<Article> getArticles(int boardId, String searchType, String searchKeyword, int pageStart, int pageArticles);
 	
 	public void writeArticle(String title, String body, int memberId, int boardId);
 	
@@ -23,6 +23,5 @@ public interface ArticleDao {
 	@Select("SELECT LAST_INSERT_ID()")
 	public int getLastArticle();
 
-	@Select("SELECT COUNT(*) FROM article WHERE boardId = #{boardId}")
-	public int getArticlesCnt(int boardId);
+	public int getArticlesCnt(int boardId, String searchType, String searchKeyword);
 }

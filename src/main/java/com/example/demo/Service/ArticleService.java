@@ -33,19 +33,19 @@ public class ArticleService {
 		articleDao.deleteArticle(id);
 	}
 
-	public List<Article> getArticles(int boardId, int page, int currentPages) {
+	public List<Article> getArticles(int boardId, String searchType, String searchText, int page, int pageArticles) {
 		
-		int pageStart = (page - 1) * currentPages;  
+		int pageStart = (page - 1) * pageArticles;  
 		// ex. 1페이지는 sql에서 0부터 가져오기, 2페이지는 sql에서 10부터 가져오기, 3페이지는 sql에서 20
 		
-		return articleDao.getArticles(boardId, pageStart, currentPages);
+		return articleDao.getArticles(boardId, searchType, searchText, pageStart, pageArticles);
 	}
 	
 	public int getLastArticle() {
 		return articleDao.getLastArticle();
 	}
 
-	public int getArticlesCnt(int boardId) {
-		return articleDao.getArticlesCnt(boardId);
+	public int getArticlesCnt(int boardId, String searchType, String searchKeyword) {
+		return articleDao.getArticlesCnt(boardId, searchType, searchKeyword);
 	}
 }

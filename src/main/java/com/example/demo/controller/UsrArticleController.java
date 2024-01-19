@@ -12,6 +12,7 @@ import com.example.demo.Service.ArticleService;
 import com.example.demo.Service.BoardService;
 import com.example.demo.util.Util;
 import com.example.demo.vo.Article;
+import com.example.demo.vo.ArticlePage;
 import com.example.demo.vo.Board;
 import com.example.demo.vo.Rq;
 
@@ -58,46 +59,33 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/list")
 	public String showList(Model model,
 			@RequestParam(defaultValue = "1") int boardId,
-			@RequestParam(defaultValue = "1") int page){
-		
-		if(page <= 0) {
-			return rq.jsReturnOnview("페이지 번호가 올바르지 않습니다.");
-		}
-		
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "title") String searchType, //  
+			@RequestParam(defaultValue = "") String searchKeyword){ // 처음 list갈 때는 서치 데이터없음.
+																 // 그때 null이 있으면 오류 뜰 수 있으므로 디폴트설정
 		Board board = boardService.getBoardById(boardId);
 		
 		if(board == null) {
 			return rq.jsReturnOnview("존재하지 않는 게시판입니다.");
 		}
 		
-		int articlesCnt = articleService.getArticlesCnt(boardId); // 현재게시판의 총 게시글수
-		
-		int currentPages = 10;   // 한 페이지당 게시글 갯수 ex. 10개 보여줄거
-		int pageLen = 10;		// 밑에 보여줄 페이지 갯수.
-		
-		int endPage = (int) (Math.ceil((double)page / pageLen) * pageLen);
-		int startPage = (endPage - pageLen) + 1; // startPage는 1, 11, 21... 의 값을 갖는다. 
-		// page = 21페이지, 밑에 페이지번호갯수 = 10 이면, 끝페이지는 30 페이지
-		
-		int totalPage = (int) Math.ceil((double)articlesCnt / currentPages); // 전체 게시글 갯수 / 한 페이지당게시글 갯수
-		
-		if(page > totalPage) {
-			return rq.jsReturnOnview("페이지 번호를 너무 많이 작성하셨습니다.");
+		if(page <= 0) {
+			return rq.jsReturnOnview("페이지 번호가 올바르지 않습니다.");
 		}
 		
-		if(endPage > totalPage) { // 오류를 방지하기 위한 메서드
-			endPage = totalPage;
-		}
-
-		List<Article> articles = articleService.getArticles(boardId, page, currentPages);
+		int articlesCnt = articleService.getArticlesCnt(boardId, searchType, searchKeyword); // 현재게시판의 총 게시글수
+		
+		ArticlePage ap = new ArticlePage(page, articlesCnt);
+		ap.CalcData();
+		
+		List<Article> articles = articleService.getArticles(boardId, searchType, searchKeyword
+				, page, ap.getPageArticles());
 		
 		model.addAttribute("articles", articles); // 조건에 부합한 게시글수 DB에서 가져오기
 		model.addAttribute("board", board); // 공지사항, 자유게시판인지 구분하기 위함.
-		model.addAttribute("articlesCnt", articlesCnt); // 공지사항, 자유게시판 등 해당 게시글의 전체 글 갯수 파악 변수
-		model.addAttribute("pageLen", pageLen);
-		model.addAttribute("page", page); // 현재 몇 페이지인지 jsp가 알아야 그 페이지를 그려줌
-		model.addAttribute("startPage", startPage);
-		model.addAttribute("endPage", endPage);
+		model.addAttribute("ap", ap); // 공지사항, 자유게시판 등 해당 게시글의 전체 글 갯수 파악 변수
+		model.addAttribute("searchType", searchType);
+		model.addAttribute("searchKeyword", searchKeyword);
 		
 		return "usr/article/list";
 	}

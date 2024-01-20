@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.ArticleDao;
 import com.example.demo.vo.Article;
+import com.example.demo.vo.ResultData;
 
 @Service
 public class ArticleService {
@@ -47,5 +48,9 @@ public class ArticleService {
 
 	public int getArticlesCnt(int boardId, String searchType, String searchKeyword) {
 		return articleDao.getArticlesCnt(boardId, searchType, searchKeyword);
+	}
+	
+	public void articleHitInc(int id) {
+		articleDao.articleHitInc(id);  // 조회수를 하나 올리고 그 값을 affected에 저장
 	}
 }

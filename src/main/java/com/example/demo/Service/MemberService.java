@@ -40,7 +40,7 @@ public class MemberService {
 		memberDao.doJoin(loginId, loginPw, name, nickName, phoneNum, email);
 		
 		Member member = getMemberById(getLastInsertId());
-		return ResultData.from("S-1", "회원가입 성공 !", member);
+		return ResultData.from("S-1", "회원가입 성공 !");
 	}
 	
 	private Member getMemberNickName(String nickName) {

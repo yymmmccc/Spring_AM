@@ -13,7 +13,7 @@
 					<span>${ap.articlesCnt}개의 글</span>
 				</div>
 				<div>
-					<form method="get">
+					<form method="GET">
 							<select data-value="${searchType}" name="searchType">
 								<option value="title">제목</option>
 								<option value="body">내용</option>
@@ -30,18 +30,20 @@
 					<thead>
 						<tr>
 							<th>번호</th>
-							<th>작성일</th>
 							<th>제목</th>
 							<th>작성자</th>
+							<th>작성일</th>
+							<th>조회수</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="article" items="${articles}"> <!-- for(Article article : articles) 랑 똑같은말 -->
 						<tr>
 							<td>${article.id}</td>
-							<td>${article.regDate.substring(2, 16)}</td>
 							<td><a class="hover:underline" href="detail?id=${article.id }">${article.title}</a></td>
 							<td>${article.nickName}</td>
+							<td>${article.regDate.substring(12, 16)}</td>
+							<td>${article.hit }</td>
 						</tr>
 						</c:forEach>
 					</tbody>

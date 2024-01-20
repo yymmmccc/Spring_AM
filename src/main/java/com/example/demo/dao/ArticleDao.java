@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.vo.Article;
 
@@ -24,4 +25,8 @@ public interface ArticleDao {
 	public int getLastArticle();
 
 	public int getArticlesCnt(int boardId, String searchType, String searchKeyword);
+	
+	@Update("UPDATE article SET hit = hit + 1 where id = #{id}")
+	public void articleHitInc(int id);
+
 }

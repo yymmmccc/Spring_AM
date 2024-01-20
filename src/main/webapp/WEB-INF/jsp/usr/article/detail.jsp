@@ -5,6 +5,7 @@
 <c:set var="pageTitle" value="detail"/>
 
 <%@ include file="../common/header.jsp" %>	
+
 	<section class="mt-8">
 		<div class="container mx-auto">
 			<div class="table-box-type-1">
@@ -36,6 +37,10 @@
 						<tr>
 							<th>내용</th>
 							<td>${article.body }</td>
+						</tr>
+						<tr>
+							<th>조회수</th>
+							<td><span id="articleDetail_increaseHitCnt">${article.hit }</span></td>
 						</tr>
 					</tbody>
 				</table>

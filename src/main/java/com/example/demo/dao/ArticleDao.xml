@@ -68,8 +68,6 @@
 					</otherwise>
 				</choose>
 		 	</if>
-		
-	
 	</select>
 	
 	<update id="modifyArticle">

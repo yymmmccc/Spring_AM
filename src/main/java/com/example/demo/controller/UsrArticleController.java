@@ -16,6 +16,10 @@ import com.example.demo.vo.ArticlePage;
 import com.example.demo.vo.Board;
 import com.example.demo.vo.Rq;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 @Controller // 웹 화면에 보여줄 수 있게 해줌
 public class UsrArticleController {
 	
@@ -91,9 +95,42 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/detail")
-	public String showDetail(Model model, int id){ // Object 타입은 최상위 타입 : 객체, 스트링 모든거 다 리턴가능
+	public String showDetail(HttpServletRequest req, HttpServletResponse res, Model model, int id){ // Object 타입은 최상위 타입 : 객체, 스트링 모든거 다 리턴가능
+		
+		Cookie oldCookie = null; 
+		Cookie[] cookies = req.getCookies(); // 쿠키는 하나가 아닐 수 있으므로 배열로 받아야함
+		
+		if(cookies != null) {
+			for(Cookie cookie : cookies) {
+				if(cookie.getName().equals("hit")) {
+					oldCookie = cookie;
+				}
+			}
+		}
+		
+		if(oldCookie != null) {
+			if(!oldCookie.getValue().contains("[" + id + "]")) {
+				articleService.articleHitInc(id);
+				oldCookie.setValue(oldCookie.getValue() + "_[" + id + "]");
+				oldCookie.setPath("/");
+				oldCookie.setMaxAge(5); // 쿠키의 수명
+				res.addCookie(oldCookie);
+			}
+		}
+		
+		else {
+			articleService.articleHitInc(id);
+			Cookie newCookie = new Cookie("hit", "[" + id + "]");
+			newCookie.setPath("/");
+			newCookie.setMaxAge(5); // 쿠키의 수명
+			res.addCookie(newCookie);
+		}
 		
 		Article article = articleService.getArticleById(id);
+		
+		if(article == null) {
+			return rq.jsReturnOnview("해당 게시물은 존재하지않습니다.");
+		}
 		
 		model.addAttribute("article", article);
 		

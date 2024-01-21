@@ -23,27 +23,36 @@
 	</select>
 	
 	<select id="getArticles" resultType="Article">
-		SELECT A.*, M.nickName
-			FROM article as A
-			INNER JOIN Member as M
+		SELECT 
+			A.*
+			, M.nickName
+			, IFNULL(SUM(RP.point), 0) AS sumReactionPoint <!-- 합계를 구할 때는 310, 311번 글 각각 그룹으로 묶고 포인트계산 -->
+			, SUM(IF(RP.point &gt; 0, RP.point, 0)) AS goodReactionPoint 
+			, SUM(IF(RP.point &lt; 0, RP.point, 0)) AS badReactionPotin
+				FROM article as A
+				INNER JOIN Member as M
 				ON A.memberId = M.Id
+				LEFT JOIN reactionPoint as RP
+				ON rp.relTypeCode = 'article'
+				AND A.id = RP.relId
 				WHERE A.boardId = #{boardId}
-				<if test="searchKeyword != ''">  <!-- 검색어를 입력한 경우 -->
-					<choose>
-						<when test="searchType == 'title'">
-							AND A.title LIKE CONCAT('%', #{searchKeyword}, '%')
-						</when>
-						<when test="searchType == 'body'">
-							AND A.body LIKE CONCAT('%', #{searchKeyword}, '%')
-						</when>
-						<otherwise>
-							AND (
-								A.title LIKE CONCAT('%', #{searchKeyword}, '%')
-                    			OR A.body LIKE CONCAT('%', #{searchKeyword}, '%')
-							)
-						</otherwise>
-					</choose>
-				</if>
+					<if test="searchKeyword != ''">  <!-- 검색어를 입력한 경우 -->
+						<choose>
+							<when test="searchType == 'title'">
+								AND A.title LIKE CONCAT('%', #{searchKeyword}, '%')
+							</when>
+							<when test="searchType == 'body'">
+								AND A.body LIKE CONCAT('%', #{searchKeyword}, '%')
+							</when>
+							<otherwise>
+								AND (
+									A.title LIKE CONCAT('%', #{searchKeyword}, '%')
+	                    			OR A.body LIKE CONCAT('%', #{searchKeyword}, '%')
+								)
+							</otherwise>
+						</choose>
+					</if>
+				GROUP BY A.id
 				ORDER BY A.id DESC
 				LIMIT #{pageStart}, #{pageArticles}
 	</select>
@@ -88,5 +97,4 @@
 		DELETE FROM article
 			WHERE id = #{id}
 	</delete>
-	
 </mapper>

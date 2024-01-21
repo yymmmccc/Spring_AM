@@ -19,7 +19,7 @@
 								<option value="body">내용</option>
 								<option value="titleBody">제목 + 내용</option>
 							</select>
-						<input class="mt-2" type="text" name="searchKeyword" placeholder="검색어를 입력하세요."/>
+						<input class="mt-2" type="text" name="searchKeyword" value="${searchKeyword }" placeholder="검색어를 입력하세요."/>
 						<input type="hidden" name="boardId" value="${board.id }"/>
 						<button>검색</button>
 					</form>
@@ -34,16 +34,18 @@
 							<th>작성자</th>
 							<th>작성일</th>
 							<th>조회수</th>
+							<th>추천</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="article" items="${articles}"> <!-- for(Article article : articles) 랑 똑같은말 -->
+						<c:forEach var="article" items="${articles}"> 
 						<tr>
 							<td>${article.id}</td>
 							<td><a class="hover:underline" href="detail?id=${article.id }">${article.title}</a></td>
 							<td>${article.nickName}</td>
 							<td>${article.regDate.substring(12, 16)}</td>
 							<td>${article.hit }</td>
+							<td>${article.sumReactionPoint }
 						</tr>
 						</c:forEach>
 					</tbody>

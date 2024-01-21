@@ -2,10 +2,10 @@ package com.example.demo.dao;
 
 import java.util.List;
 
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-
 import com.example.demo.vo.Article;
 
 @Mapper
@@ -28,5 +28,5 @@ public interface ArticleDao {
 	
 	@Update("UPDATE article SET hit = hit + 1 where id = #{id}")
 	public void articleHitInc(int id);
-
+	
 }

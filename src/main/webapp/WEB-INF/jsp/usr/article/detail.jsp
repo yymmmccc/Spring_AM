@@ -42,6 +42,22 @@
 							<th>조회수</th>
 							<td><span id="articleDetail_increaseHitCnt">${article.hit }</span></td>
 						</tr>
+						<tr>
+							<c:set var="point" value="0"/>
+							<th>좋아요</th>
+							<td>${point }</td>
+						<c:forEach var="reactionPoint" items="${reactionPoints}">
+							<td>
+								<c:set var="point" value="${point + reactionPoint.point}"/>
+							</td>
+						</c:forEach>
+						</tr>
+						<tr>
+							<th>싫어요</th>
+							<c:if test="${reactionPoint.point == -1 }">
+							<td>${reactionPoint.point }</td>
+							</c:if>
+						</tr>
 					</tbody>
 				</table>
 			</div>

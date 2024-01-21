@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,12 +75,12 @@ public class UsrArticleController {
 		}
 		
 		if(page <= 0) {
-			return rq.jsReturnOnview("페이지 번호가 올바르지 않습니다.");
+			return rq.jsReturnOnview("없는 페이지입니다.");
 		}
 		
 		int articlesCnt = articleService.getArticlesCnt(boardId, searchType, searchKeyword); // 현재게시판의 총 게시글수
 		
-		ArticlePage ap = new ArticlePage(page, articlesCnt);
+		ArticlePage ap = new ArticlePage(page, articlesCnt);  // 게시물 페이지 계산 클래스
 		ap.CalcData();
 		
 		List<Article> articles = articleService.getArticles(boardId, searchType, searchKeyword
@@ -108,24 +109,25 @@ public class UsrArticleController {
 			}
 		}
 		
-		if(oldCookie != null) {
-			if(!oldCookie.getValue().contains("[" + id + "]")) {
+		if(oldCookie != null) { // 쿠키 안에 hit이라는 쿠키가 있을 때 (즉, detail 들어간적 있음)
+			if(!oldCookie.getValue().contains("[" + id + "]")) { 
+				// 320번 글을 들어온 적이 없으면 hit 쿠키안에 320번 글이 없을때.
 				articleService.articleHitInc(id);
 				oldCookie.setValue(oldCookie.getValue() + "_[" + id + "]");
 				oldCookie.setPath("/");
-				oldCookie.setMaxAge(5); // 쿠키의 수명
+				oldCookie.setMaxAge(60 * 5); // 쿠키의 수명
 				res.addCookie(oldCookie);
 			}
 		}
 		
-		else {
+		else { // 아예 hit 이라는 쿠키가 없을 때
 			articleService.articleHitInc(id);
 			Cookie newCookie = new Cookie("hit", "[" + id + "]");
 			newCookie.setPath("/");
-			newCookie.setMaxAge(5); // 쿠키의 수명
+			newCookie.setMaxAge(60 * 5); // 쿠키의 수명
 			res.addCookie(newCookie);
 		}
-		
+	
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {

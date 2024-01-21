@@ -16,4 +16,7 @@ public class Article{
 	private int memberId;
 	private String nickName;
 	private int hit;
+	private int sumReactionPoint;
+	private int goodReactionPoint;
+	private int badReactionPoint;
 }

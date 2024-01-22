@@ -15,11 +15,19 @@
 	</insert>
 	
 	<select id="getArticleById" resultType="Article">
-		SELECT A.*, M.nickName
-			FROM article as A
-			INNER JOIN Member as M
+		SELECT 
+			A.*
+			, M.nickName
+			, SUM(IF(RP.point &gt; 0, RP.point, 0)) AS goodReactionPoint 
+			, SUM(IF(RP.point &lt; 0, RP.point, 0)) AS badReactionPoint
+				FROM article as A
+				INNER JOIN Member as M
 				ON A.memberId = M.Id
+				LEFT JOIN reactionPoint AS RP
+				ON relTypeCode = 'article'
+				AND A.id = relId
 				WHERE A.id = #{id}
+				GROUP BY A.id
 	</select>
 	
 	<select id="getArticles" resultType="Article">

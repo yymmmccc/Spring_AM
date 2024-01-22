@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import java.util.List;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +10,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.Service.ArticleService;
 import com.example.demo.Service.BoardService;
+import com.example.demo.Service.ReplyService;
 import com.example.demo.util.Util;
 import com.example.demo.vo.Article;
 import com.example.demo.vo.ArticlePage;
 import com.example.demo.vo.Board;
+import com.example.demo.vo.Reply;
 import com.example.demo.vo.Rq;
 
 import jakarta.servlet.http.Cookie;
@@ -26,12 +27,15 @@ public class UsrArticleController {
 	
 	private ArticleService articleService;
 	private BoardService boardService;
+	private ReplyService replyService;
 	private Rq rq;
 	
-	public UsrArticleController(ArticleService articleService, BoardService boardService, Rq rq) {
+	public UsrArticleController(ArticleService articleService, BoardService boardService,
+			Rq rq, ReplyService replyService) {
 		
 		this.articleService = articleService;
 		this.boardService = boardService;
+		this.replyService = replyService;
 		this.rq = rq;
 		
 	}
@@ -134,7 +138,10 @@ public class UsrArticleController {
 			return rq.jsReturnOnview("해당 게시물은 존재하지않습니다.");
 		}
 		
+		List <Reply> replies = replyService.getReplies("article", id);
+
 		model.addAttribute("article", article);
+		model.addAttribute("replies", replies);
 		
 		return "usr/article/detail";
 	}

@@ -19,6 +19,9 @@ public class Rq {
 	
 	@Getter
 	private int loginedMemberId;
+	@Getter
+	private Member loginedMember;
+	
 	private HttpServletRequest req;
 	private HttpServletResponse res;
 	private HttpSession session;
@@ -27,16 +30,18 @@ public class Rq {
 		
 		this.req = req;
 		this.res = res;
-		
 		this.session = req.getSession(); // req 많은 정보들 중에 세션을 받아오는 메서드
 		
 		int loginedMemberId = 0;
+		Member loginedMember = null;
 		
 		if(session.getAttribute("loginedMemberId") != null) {
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
+			loginedMember = (Member) session.getAttribute("loginedMember");
 		}
 		
 		this.loginedMemberId = loginedMemberId;
+		this.loginedMember = loginedMember;
 		
 		this.req.setAttribute("rq", this);
 	}
@@ -56,13 +61,13 @@ public class Rq {
 	}
 
 	public void login(Member member) {
-		
 		this.session.setAttribute("loginedMemberId", member.getId());
+		this.session.setAttribute("loginedMember", member);
 	}
 
 	public void logout() {
-		
 		this.session.removeAttribute("loginedMemberId");
+		this.session.removeAttribute("loginedMember");
 	}
 
 	public String jsReturnOnview(String msg) {

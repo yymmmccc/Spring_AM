@@ -2,9 +2,11 @@ package com.example.demo.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.vo.Reply;
 
@@ -20,7 +22,7 @@ public interface ReplyDao {
 			, regDate = NOW()
 			, updateDate = NOW()
 			""")
-	public void writeReplay(int loginedMemberId, String relTypeCode, int relId, String replyText);
+	public void writeReply(int loginedMemberId, String relTypeCode, int relId, String replyText);
 
 	@Select("""
 			SELECT R.*, M.nickName 
@@ -31,4 +33,25 @@ public interface ReplyDao {
 				AND R.relId = #{relId}
 			""")
 	public List<Reply> getReplies(String relTypeCode, int relId);
+
+	@Delete("""
+			DELETE FROM reply
+			WHERE id = #{id}
+			""")
+	public void deleteReply(int id);
+
+	@Select("""
+			SELECT * FROM
+			reply
+			WHERE id = #{id}
+			""")
+	public Reply getReply(int id);
+
+	@Update("""
+			UPDATE reply
+			SET replyText = #{replyText}
+			, updateDate = NOW()
+			WHERE id = #{id}
+			""")
+	public void doModify(int id, String replyText);
 }

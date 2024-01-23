@@ -20,13 +20,28 @@ public class ReplyService {
 		this.replyDao = replyDao;
 	}
 
-	public void writeReplay(int loginedMemberId, String relTypeCode, int relId, String replyText) {
+	public void writeReply(int loginedMemberId, String relTypeCode, int relId, String replyText) {
 		
-		replyDao.writeReplay(loginedMemberId, relTypeCode, relId, replyText);
+		replyDao.writeReply(loginedMemberId, relTypeCode, relId, replyText);
 		
 	}
 
 	public List<Reply> getReplies(String relTypeCode, int relId) {
 		return replyDao.getReplies(relTypeCode, relId);
+	}
+
+	public void deleteReply(int id) {
+		replyDao.deleteReply(id);
+		
+	}
+
+	public Reply getReply(int id) {
+		return replyDao.getReply(id);
+		
+	}
+
+	public void doModify(int id, String replyText) {
+		replyDao.doModify(id, replyText);
+		
 	}
 }
